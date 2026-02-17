@@ -1,0 +1,14 @@
+{
+  "name": "Your Name",
+  "title": "Professor • Department • University",
+  "affiliation": "University Name",
+  "location": "Earth",
+  "email": "you@example.com",
+  "bio": "Write a short professional bio here. This is editable in /admin.",
+  "avatar": "/uploads/avatar.png",
+  "github_username": "YOUR_GITHUB_USERNAME",
+  "google_scholar_url": "https://scholar.google.com/",
+  "orcid_url": "https://orcid.org/",
+  "website_url": "https://example.com",
+  "links": [{ "label": "Lab Page", "url": "https://example.com" }]
+}

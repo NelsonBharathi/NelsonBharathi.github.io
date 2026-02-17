@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ItemCard from "../components/ItemCard.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+type Attachment = {
+  label: string;
+  file?: string;
+  url?: string;
+};
+
+const items = (await getCollection("student-projects"))
+  .sort(
+    (
+      a: CollectionEntry<"student-projects">,
+      b: CollectionEntry<"student-projects">
+    ) => (b.data.year ?? 0) - (a.data.year ?? 0)
+  );
+---
+
+<BaseLayout title="Student Projects">
+  <h1 class="text-2xl font-bold">Student Projects</h1>
+
+  <div class="mt-6 grid gap-4">
+    {items.map((e: CollectionEntry<"student-projects">) => (
+      <ItemCard
+        title={e.data.title}
+        meta={`${e.data.student_names ?? ""}${e.data.year ? ` • ${e.data.year}` : ""}`.trim()}
+      >
+        {e.data.description ? (
+          <p class="text-zinc-300">{e.data.description}</p>
+        ) : null}
+
+        <div class="mt-4 flex flex-wrap gap-3 text-sm">
+          {e.data.url ? (
+            <a class="text-sky-300 hover:underline" href={e.data.url} target="_blank">Link</a>
+          ) : null}
+          {e.data.repo ? (
+            <a class="text-sky-300 hover:underline" href={e.data.repo} target="_blank">Repo</a>
+          ) : null}
+        </div>
+
+        {e.data.attachments?.length ? (
+          <div class="mt-4">
+            <div class="text-sm font-semibold text-zinc-200">Downloads</div>
+            <div class="mt-2 flex flex-wrap gap-3 text-sm">
+              {(e.data.attachments as Attachment[]).map((a: Attachment) =>
+                a.file ? (
+                  <a class="text-sky-300 hover:underline" href={a.file} target="_blank">{a.label}</a>
+                ) : a.url ? (
+                  <a class="text-sky-300 hover:underline" href={a.url} target="_blank">{a.label}</a>
+                ) : (
+                  <span class="text-zinc-300">{a.label}</span>
+                )
+              )}
+            </div>
+          </div>
+        ) : null}
+      </ItemCard>
+    ))}
+  </div>
+</BaseLayout>

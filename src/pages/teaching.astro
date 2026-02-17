@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ItemCard from "../components/ItemCard.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+type Material = {
+  label: string;
+  file?: string;
+  url?: string;
+};
+
+const items = await getCollection("teaching");
+---
+
+<BaseLayout title="Teaching">
+  <h1 class="text-2xl font-bold">Teaching</h1>
+  <p class="mt-2 text-zinc-400">Each course can include downloadable materials and URLs.</p>
+
+  <div class="mt-6 grid gap-4">
+    {items.map((e: CollectionEntry<"teaching">) => (
+      <ItemCard
+        title={e.data.title}
+        meta={`${e.data.term ?? ""}${e.data.institution ? ` • ${e.data.institution}` : ""}`.trim()}
+      >
+        {e.data.description ? (
+          <p class="text-zinc-300">{e.data.description}</p>
+        ) : null}
+
+        {e.data.materials?.length ? (
+          <div class="mt-4">
+            <div class="text-sm font-semibold text-zinc-200">Materials</div>
+            <ul class="mt-2 list-disc pl-5 text-sm text-zinc-300">
+              {(e.data.materials as Material[]).map((m: Material) => (
+                <li>
+                  {m.file ? (
+                    <a class="text-sky-300 hover:underline" href={m.file} target="_blank">
+                      {m.label}
+                    </a>
+                  ) : m.url ? (
+                    <a class="text-sky-300 hover:underline" href={m.url} target="_blank">
+                      {m.label}
+                    </a>
+                  ) : (
+                    <span>{m.label}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </ItemCard>
+    ))}
+  </div>
+</BaseLayout>

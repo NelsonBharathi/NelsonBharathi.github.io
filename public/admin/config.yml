@@ -1,0 +1,233 @@
+backend:
+  name: github
+  repo: YOUR_USERNAME/YOUR_USERNAME.github.io
+  branch: main
+  base_url: https://YOUR_OAUTH_WORKER_DOMAIN
+  auth_endpoint: auth
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "profile"
+    label: "Profile"
+    files:
+      - file: "src/content/profile/profile.json"
+        label: "Profile Info"
+        name: "profile"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Title", name: "title", widget: "string", required: false }
+          - {
+              label: "Affiliation",
+              name: "affiliation",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Location",
+              name: "location",
+              widget: "string",
+              required: false,
+            }
+          - { label: "Email", name: "email", widget: "string", required: false }
+          - { label: "Bio", name: "bio", widget: "text", required: false }
+          - {
+              label: "Avatar",
+              name: "avatar",
+              widget: "image",
+              required: false,
+            }
+          - {
+              label: "GitHub Username",
+              name: "github_username",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Google Scholar URL",
+              name: "google_scholar_url",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "ORCID URL",
+              name: "orcid_url",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Website URL",
+              name: "website_url",
+              widget: "string",
+              required: false,
+            }
+          - label: "Extra Links"
+            name: "links"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+
+  - name: "publications"
+    label: "Publications"
+    folder: "src/content/publications"
+    create: true
+    delete: true
+    slug: "{{year}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Year", name: "year", widget: "number" }
+      - {
+          label: "Venue (Journal/Conf)",
+          name: "venue",
+          widget: "string",
+          required: false,
+        }
+      - { label: "Authors", name: "authors", widget: "string", required: false }
+      - { label: "Abstract", name: "abstract", widget: "text", required: false }
+      - {
+          label: "Paper PDF",
+          name: "paper_pdf",
+          widget: "file",
+          required: false,
+        }
+      - {
+          label: "Slides PDF",
+          name: "slides_pdf",
+          widget: "file",
+          required: false,
+        }
+      - {
+          label: "External URL",
+          name: "url",
+          widget: "string",
+          required: false,
+        }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: "teaching"
+    label: "Teaching"
+    folder: "src/content/teaching"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Term", name: "term", widget: "string", required: false }
+      - {
+          label: "Institution",
+          name: "institution",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "text",
+          required: false,
+        }
+      - label: "Materials"
+        name: "materials"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - {
+              label: "File (optional)",
+              name: "file",
+              widget: "file",
+              required: false,
+            }
+          - {
+              label: "URL (optional)",
+              name: "url",
+              widget: "string",
+              required: false,
+            }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Role", name: "role", widget: "string", required: false }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "text",
+          required: false,
+        }
+      - { label: "Project URL", name: "url", widget: "string", required: false }
+      - { label: "Repo URL", name: "repo", widget: "string", required: false }
+      - { label: "Demo URL", name: "demo", widget: "string", required: false }
+      - label: "Attachments"
+        name: "attachments"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - {
+              label: "File (optional)",
+              name: "file",
+              widget: "file",
+              required: false,
+            }
+          - {
+              label: "URL (optional)",
+              name: "url",
+              widget: "string",
+              required: false,
+            }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: "student-projects"
+    label: "Student Projects"
+    folder: "src/content/student-projects"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "Student Names",
+          name: "student_names",
+          widget: "string",
+          required: false,
+        }
+      - { label: "Year", name: "year", widget: "number", required: false }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "text",
+          required: false,
+        }
+      - { label: "URL", name: "url", widget: "string", required: false }
+      - { label: "Repo", name: "repo", widget: "string", required: false }
+      - label: "Attachments"
+        name: "attachments"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - {
+              label: "File (optional)",
+              name: "file",
+              widget: "file",
+              required: false,
+            }
+          - {
+              label: "URL (optional)",
+              name: "url",
+              widget: "string",
+              required: false,
+            }
+      - { label: "Body", name: "body", widget: "markdown", required: false }

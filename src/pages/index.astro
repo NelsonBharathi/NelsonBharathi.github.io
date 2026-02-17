@@ -1,0 +1,90 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ItemCard from "../components/ItemCard.astro";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
+
+const profile = await getEntry("profile", "profile");
+const p = profile?.data;
+
+const pubsAll = await getCollection("publications");
+const teachAll = await getCollection("teaching");
+const projAll = await getCollection("projects");
+
+const pubs = pubsAll
+  .sort(
+    (a: CollectionEntry<"publications">, b: CollectionEntry<"publications">) =>
+      b.data.year - a.data.year
+  )
+  .slice(0, 3);
+
+const teach = teachAll.slice(0, 3);
+const proj = projAll.slice(0, 3);
+---
+
+<BaseLayout title={p?.name ? `${p.name} – Portfolio` : "Portfolio"}>
+  <div class="space-y-6">
+    <div class="rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/70 to-zinc-950/30 p-6">
+      <div class="text-2xl font-bold">{p?.name ?? "Your Name"}</div>
+      <div class="mt-2 text-zinc-300">
+        {p?.title ?? "Edit Profile in /admin → Profile"}
+      </div>
+      <div class="mt-4 text-sm text-zinc-400">
+        This site is fully editable via <span class="text-emerald-200">/admin</span>. No code edits required.
+      </div>
+    </div>
+
+    <!-- Publications -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h1 class="text-xl font-semibold">Recent Publications</h1>
+        <a class="text-sm text-sky-300 hover:underline" href="/publications">View all</a>
+      </div>
+
+      <div class="grid gap-4">
+        {pubs.map((e: CollectionEntry<"publications">) => (
+          <ItemCard
+            title={e.data.title}
+            meta={`${e.data.venue ?? "Publication"} • ${e.data.year}`}
+          >
+            <p class="text-zinc-300">{e.data.abstract ?? ""}</p>
+          </ItemCard>
+        ))}
+      </div>
+    </section>
+
+    <!-- Teaching -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold">Teaching</h2>
+        <a class="text-sm text-sky-300 hover:underline" href="/teaching">View all</a>
+      </div>
+
+      <div class="grid gap-4">
+        {teach.map((e: CollectionEntry<"teaching">) => (
+          <ItemCard
+            title={e.data.title}
+            meta={`${e.data.term ?? ""} ${e.data.institution ?? ""}`.trim()}
+          >
+            <p class="text-zinc-300">{e.data.description ?? ""}</p>
+          </ItemCard>
+        ))}
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold">Projects</h2>
+        <a class="text-sm text-sky-300 hover:underline" href="/projects">View all</a>
+      </div>
+
+      <div class="grid gap-4">
+        {proj.map((e: CollectionEntry<"projects">) => (
+          <ItemCard title={e.data.title} meta={e.data.role ?? ""}>
+            <p class="text-zinc-300">{e.data.description ?? ""}</p>
+          </ItemCard>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

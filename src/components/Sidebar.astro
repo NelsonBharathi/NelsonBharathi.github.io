@@ -1,0 +1,81 @@
+---
+import { getEntry } from "astro:content";
+
+type QuickLink = { label: string; url: string };
+
+const profile = await getEntry("profile", "profile");
+const p = profile?.data;
+
+const avatar = p?.avatar || "/uploads/avatar.png";
+const githubUrl = p?.github_username ? `https://github.com/${p.github_username}` : undefined;
+---
+
+<div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+  <div class="flex items-center gap-4">
+    <img
+      src={avatar}
+      alt="Avatar"
+      class="h-20 w-20 rounded-full border border-zinc-700 object-cover"
+      loading="lazy"
+    />
+    <div>
+      <div class="text-lg font-semibold leading-tight">{p?.name ?? "Your Name"}</div>
+      <div class="mt-1 text-sm text-zinc-400">{p?.title ?? "Your Title / Department"}</div>
+    </div>
+  </div>
+
+  <div class="mt-4 text-sm text-zinc-300">
+    {p?.bio ?? "Short biography. Edit in /admin → Profile."}
+  </div>
+
+  <div class="mt-5 space-y-2 text-sm">
+    {p?.location && <div class="text-zinc-300">📍 {p.location}</div>}
+    {p?.affiliation && <div class="text-zinc-300">🏛️ {p.affiliation}</div>}
+
+    {p?.email && (
+      <div>
+        ✉️ <a class="text-sky-300 hover:underline" href={`mailto:${p.email}`}>{p.email}</a>
+      </div>
+    )}
+
+    {p?.website_url && (
+      <div>
+        🔗 <a class="text-sky-300 hover:underline" href={p.website_url} target="_blank">Website</a>
+      </div>
+    )}
+
+    {p?.google_scholar_url && (
+      <div>
+        🎓 <a class="text-sky-300 hover:underline" href={p.google_scholar_url} target="_blank">Google Scholar</a>
+      </div>
+    )}
+
+    {p?.orcid_url && (
+      <div>
+        🧬 <a class="text-sky-300 hover:underline" href={p.orcid_url} target="_blank">ORCID</a>
+      </div>
+    )}
+
+    {githubUrl && (
+      <div>
+        💻 <a class="text-sky-300 hover:underline" href={githubUrl} target="_blank">GitHub</a>
+      </div>
+    )}
+  </div>
+
+  {p?.links?.length ? (
+    <div class="mt-5 border-t border-zinc-800 pt-4">
+      <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+        Quick Links
+      </div>
+
+      <div class="flex flex-col gap-2">
+        {(p.links as QuickLink[]).map((l: QuickLink) => (
+          <a class="text-sm text-sky-300 hover:underline" href={l.url} target="_blank">
+            {l.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  ) : null}
+</div>

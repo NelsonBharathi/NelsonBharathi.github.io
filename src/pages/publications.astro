@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ItemCard from "../components/ItemCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+const items = (await getCollection("publications")).sort(
+  (a: CollectionEntry<"publications">, b: CollectionEntry<"publications">) =>
+    b.data.year - a.data.year
+);
+---
+
+<BaseLayout title="Publications">
+  <h1 class="text-2xl font-bold">Publications</h1>
+  <p class="mt-2 text-zinc-400">
+    Add/edit/delete publications in <span class="text-emerald-200">/admin</span>.
+  </p>
+
+  <div class="mt-6 grid gap-4">
+    {items.map((e: CollectionEntry<"publications">) => (
+      <ItemCard
+        title={e.data.title}
+        meta={`${e.data.venue ?? "Publication"} • ${e.data.year}${e.data.authors ? ` • ${e.data.authors}` : ""}`}
+      >
+        {e.data.abstract ? <p class="text-zinc-300">{e.data.abstract}</p> : null}
+
+        <div class="mt-4 flex flex-wrap gap-3 text-sm">
+          {e.data.paper_pdf ? (
+            <a class="text-sky-300 hover:underline" href={e.data.paper_pdf} target="_blank">Download Paper</a>
+          ) : null}
+          {e.data.slides_pdf ? (
+            <a class="text-sky-300 hover:underline" href={e.data.slides_pdf} target="_blank">Download Slides</a>
+          ) : null}
+          {e.data.url ? (
+            <a class="text-sky-300 hover:underline" href={e.data.url} target="_blank">External Link</a>
+          ) : null}
+        </div>
+      </ItemCard>
+    ))}
+  </div>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+const { title, meta, children } = Astro.props;
+---
+
+<article class="rounded-2xl border border-zinc-800 bg-zinc-950/40 p-5">
+  <h2 class="text-lg font-semibold text-zinc-100">{title}</h2>
+  {meta ? <div class="mt-1 text-sm text-zinc-400">{meta}</div> : null}
+  <div class="prose prose-invert mt-4 max-w-none prose-a:text-sky-300 prose-a:no-underline hover:prose-a:underline">
+    <slot />
+  </div>
+</article>
