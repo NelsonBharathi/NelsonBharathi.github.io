@@ -2,7 +2,7 @@ backend:
   name: github
   repo: NelsonBharathi/NelsonBharathi.github.io
   branch: main
-  base_url: https://portfolio-oauth.nxwf9xhj7z.workers.dev/
+  base_url: https://portfolio-oauth.nxwf9xhj7z.workers.dev
   auth_endpoint: auth
 
 media_folder: "public/uploads"
